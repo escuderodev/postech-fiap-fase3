@@ -2,4 +2,4 @@
 
 ## descrição
 
-Repositório contendo todos conteúdo do projeto Frontend da API de POstagem do Curso Postech Dev FullStack da FIAP.
+Repositório contendo todo conteúdo do projeto Frontend da API de POstagem do Curso Postech Dev FullStack da FIAP.
