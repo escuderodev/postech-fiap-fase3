@@ -1,0 +1,12 @@
+version: '4'
+
+services:
+  app:
+    container_name: pos-fiap-2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+    ports:
+      - 3000:3000
