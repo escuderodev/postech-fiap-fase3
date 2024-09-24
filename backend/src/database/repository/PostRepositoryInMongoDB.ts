@@ -51,11 +51,11 @@ export class PostRepositoryInMongoDB implements PostRepository {
     }
 
     async getAll() {
-        return await Post.find().populate('discipline')
+        return await Post.find().populate('comments')
     }
 
     async getById(id: string) {
-        return await Post.findById(id).populate('discipline')
+        return await Post.findById(id).populate('comments')
     }
 
     async getByText(regex: RegExp) {

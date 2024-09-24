@@ -3,6 +3,7 @@ import "dotenv/config"
 import { userRouter } from "../src/routes/userRoutes"
 import { disciplineRouter } from "./routes/disciplineRoutes"
 import { postRouter } from "./routes/postRoutes"
+import { commentRouter } from "./routes/commentRoutes"
 import { setupSwagger } from "../swagger"
 
 export class App {
@@ -14,6 +15,7 @@ export class App {
         this.server.use(userRouter)
         this.server.use(disciplineRouter)
         this.server.use(postRouter)
+        this.server.use(commentRouter)
         this.server.get("/", (req: express.Request, res: express.Response) => {
             res.status(200).json({message: "Bem vindo a minha API!"})
         })

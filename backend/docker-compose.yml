@@ -1,4 +1,4 @@
-version: '4'
+version: '3.9'  # Alterado para uma versão suportada
 
 services:
   app:
@@ -7,6 +7,9 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - PORT=3000
+      - PORT=${PORT}                # Usando variável do .env
+      - DB_USER=${DB_USER}          # Variável do .env para usuário do banco
+      - DB_PASSWORD=${DB_PASSWORD}  # Variável do .env para senha do banco
+      - SECRET=${SECRET}            # Variável do .env para o segredo
     ports:
-      - 3000:3000
+      - "3000:3000"  # Mapeando a porta

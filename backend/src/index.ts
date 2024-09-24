@@ -13,5 +13,3 @@ new App().getServer().listen(PORT, () => {
         })
     .catch(() => console.log("Conexão com banco de dados falhou!"))
 })
-
-// teste
