@@ -11,6 +11,7 @@ import Modal from "../../Components/Modal"
 import ModalExluir from "../../Components/Modal/ModalExcluir"
 import ModalEditar from "../../Components/Modal/ModalEditar"
 import ModalAdicionar from "../../Components/Modal/ModalAdicionar"
+import ModalView from '../Modal/ModalView';
 import { useState } from 'react';
 
 
@@ -29,6 +30,7 @@ import { FaTrashCan } from "react-icons/fa6";*/
 export default function ListPostagens() {
 
   const [openModal, setOpenModal] = useState(false);
+  const [openModalView, setOpenModalView] = useState(false);
   const [openModalremove, setOpenModalremove] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalAdic, setOpenModalAdic] = useState(false);
@@ -45,14 +47,23 @@ export default function ListPostagens() {
         <div className='itens'>
           <img src={visual} alt='logo'></img>
         </div>
+
         <div className='itens'>
           <p>3 Quantidade:</p>
         </div>
+
         <div className='itens3'>
-
-          <input type="button" value={"Adicionar usuário"} onClick={() => setOpenModal(true)}></input>
-
+          <input type="button" value={"Adicionar Usuário"} onClick={() => setOpenModal(true)}></input>
         </div>
+        <div className='itens4'>
+          <input type="button" value={"Adicionar Postagem"} onClick={() => setOpenModalAdic(true)}></input>
+        </div>
+        <div className='itens5'>
+          <input type="button" value={"Adicionar Disciplina"} onClick={() => setOpenModalView(true)}></input>
+        </div>
+
+
+
       </section>
 
       <section className='Quartasessao'>
@@ -89,7 +100,6 @@ export default function ListPostagens() {
             </div>
             <div className='icones'>
               <div className='icon'><FaRegEdit size={30} onClick={() => setOpenModalEdit(true)} /></div>
-              <div className='icon'><MdAddToPhotos size={30} onClick={() => setOpenModalAdic(true)} /></div>
               <div className='icon'><FaTrashCan size={27} onClick={() => setOpenModalremove(true)} /></div>
             </div>
 
@@ -115,7 +125,6 @@ export default function ListPostagens() {
             </div>
             <div className='icones'>
               <div className='icon'><FaRegEdit size={30} /></div>
-              <div className='icon'><MdAddToPhotos size={30} /></div>
               <div className='icon'><FaTrashCan size={27} /></div>
             </div>
           </div>
@@ -131,54 +140,75 @@ export default function ListPostagens() {
           </div>
           <h2></h2>
         </div>
+
+
+
         <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
 
           <form>
 
-            <label> Titulo:</label>
+            <label>Usuário:</label>
             <input className='modalbutton' type="text" name="name" />
 
-            <label>Autor:</label>
+            <label>E-mail:</label>
             <input className='modalbutton' type="text" name="name" />
-            <label>Disciplina:</label>
 
+            <label>Senha:</label>
+            <input className='modalbutton' type="text" name="name" />
+
+            <label>Confimar senha:</label>
             <input className='modalbutton' type="text" name="name" />
 
             <div className='grupobutton'>
               <input type="submit" value="Adicionar" />
 
-              <input type="submit" value="cancelar" />
+              <input type="submit" value="Cancelar" />
             </div>
           </form>
-
-
-
         </Modal>
-        <ModalExluir isOpenn={openModalremove} setModalOpenn={() => setOpenModalremove(!openModalremove)}>
+
+        <ModalView isAdOpen={openModalView} setAdModalOpen={() => setOpenModalView(!openModalView)}>
 
           <form>
 
-            <label className='excluirtitulo'> Deseja Exluir Postagens?</label>
+            <label className=''> Titulo: </label>
+            <input className='modalbutton' type="text" name="name" />
+
+            <div className='grupobutton'>
+              
+              <input type="submit" value="Adicionar" />
+              <input type="submit" value="Cancelar" />
+
+            </div>
+          </form>
+        </ModalView>
+
+
+        <ModalExluir isOpenn={openModalremove} setModalOpen={() => setOpenModalremove(!openModalremove)}>
+          <form>
+
+            <label className='excluirtitulo'> Deseja exluir a postagem?</label>
             <div className='grupobutton'>
               <input type="submit" value="Exluir" />
-              <input type="submit" value="cancelar" />
+              <input type="submit" value="Cancelar" />
             </div>
           </form>
         </ModalExluir>
 
 
+
         <ModalEditar isEOpen={openModalEdit} setModaEdilOpen={() => setOpenModalEdit(!openModalEdit)}>
-
           <form>
-            <label className=''> Deseja Editar Postagens?</label>
-
             <label> Titulo:</label>
             <input className='modalbutton' type="text" name="name" />
 
             <label>Autor:</label>
             <input className='modalbutton' type="text" name="name" />
-            <label>Disciplina:</label>
 
+            <label>Disciplina:</label>
+            <input className='modalbutton' type="text" name="name" />
+            
+            <label>Conteudo:</label>
             <input className='modalbutton' type="text" name="name" />
 
             <div className='grupobutton'>
@@ -191,22 +221,20 @@ export default function ListPostagens() {
 
 
 
-
-
-
-
         <ModalAdicionar isAdOpen={openModalAdic} setAdModalOpen={() => setOpenModalAdic(!openModalAdic)}>
-
+          
           <form>
-            <label className=''> Deseja Adicionar Postagens?</label>
-
-
+           
+            <label> Titulo:</label>
             <input className='modalbutton' type="text" name="name" />
 
             <label>Autor:</label>
             <input className='modalbutton' type="text" name="name" />
-            <label>Disciplina:</label>
 
+            <label>Disciplina:</label>
+            <input className='modalbutton' type="text" name="name" />
+            
+            <label>Conteudo:</label>
             <input className='modalbutton' type="text" name="name" />
 
             <div className='grupobutton'>
@@ -214,13 +242,20 @@ export default function ListPostagens() {
 
               <input type="submit" value="cancelar" />
             </div>
+
           </form>
+
         </ModalAdicionar>
 
+
       </section>
+
       <SectionDetalhe />
+
       <Footer />
+
     </div>
+
   )
 }
 

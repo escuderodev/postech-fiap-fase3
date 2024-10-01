@@ -84,9 +84,10 @@ export default function ListPostagens() {
 
 
             <div className='grupobutton'>
-              <input type="submit" value="Adicionar" />
-
+              
+              <input type="submit" value="Adicionar comentário" />
               <input type="submit" value="Cancelar" />
+
             </div>
           </form>
         </ModalView>
