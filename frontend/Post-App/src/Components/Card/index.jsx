@@ -2,19 +2,21 @@ import ModalView from "../Modal/ModalView";
 import { useState } from "react";
 import { MdAddToPhotos } from "react-icons/md";
 
-const Card = (post) => {
+const Card = ({ post }) => {
     const [openModalView, setOpenModalView] = useState(false);
+
+    //console.log(post);
 
     return (
         <section className="Quintasessao">
             <div className="centrocard">
                 <div className="card1">
                     <div className="Ptitulo">
-                        <h2>Titulo: {post.post.title}</h2>
-                        <h2>Disciplina: {post.post.discipline}</h2>
+                        <h2>Titulo: {post.title}</h2>
+                        <h2>Disciplina: {post.discipline}</h2>
                     </div>
                     <div className="Stitulo">
-                        <h2>Autor:{post.post.author}</h2>
+                        <h2>Autor:{post.author}</h2>
                     </div>
                     <div className="icones">
                         <div className="icon">
@@ -38,7 +40,7 @@ const Card = (post) => {
                         className="modalbutton"
                         type="text"
                         name="title"
-                        value={post.post.title}
+                        value={post.title}
                     />
 
                     <label>Autor:</label>
@@ -47,7 +49,7 @@ const Card = (post) => {
                         className="modalbutton"
                         type="text"
                         name="author"
-                        value={post.post.author}
+                        value={post.author}
                     />
 
                     <label>Disciplina:</label>
@@ -56,7 +58,7 @@ const Card = (post) => {
                         className="modalbutton"
                         type="text"
                         name="name"
-                        value={post.post.discipline}
+                        value={post.discipline}
                     />
 
                     <label className=""> Detalhamento: </label>
@@ -65,7 +67,7 @@ const Card = (post) => {
                         className="modalbutton"
                         type="text"
                         name="name"
-                        value={post.post.description}
+                        value={post.description}
                     />
 
                     <label>Comentarios: </label>

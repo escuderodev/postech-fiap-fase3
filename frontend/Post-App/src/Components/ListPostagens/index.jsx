@@ -1,19 +1,16 @@
 import "./style.css";
 import logotitulo from "../../assets/img03.png";
 import visual from "../../assets/img05.png";
-import { FaRegEdit } from "react-icons/fa";
-import { MdAddToPhotos } from "react-icons/md";
-import { FaTrashCan } from "react-icons/fa6";
 import Footer from "../../Components/Footer";
 import SectionDetalhe from "../../Components/SectionDetalhe";
 import Modal from "../../Components/Modal";
-import ModalExluir from "../../Components/Modal/ModalExcluir";
-import ModalEditar from "../../Components/Modal/ModalEditar";
 import ModalAdicionar from "../../Components/Modal/ModalAdicionar";
 import ModalView from "../Modal/ModalView";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { handleSubmit } from "../../services/userService";
 import { handleDisciplineSubmit } from "../../services/disciplineService";
+import CardAuth from "../CardAuth";
+import { handleEditPost, getAllPosts } from "../../services/postService";
 
 /*
 import titulo from '../../assets/img05.png'
@@ -39,6 +36,17 @@ export default function ListPostagens() {
     const [formErrors, setFormErrors] = useState({});
 
     const [title, setTitle] = useState("");
+
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const data = await getAllPosts();
+            setPosts(data);
+        };
+
+        fetchPosts();
+    }, []);
 
     return (
         <div className="PrimeiraSesaao">
@@ -96,255 +104,125 @@ export default function ListPostagens() {
                 </div>
             </section>
 
-            <section className="Quintasessao">
-                <div className="centrocard">
-                    <div className="card1">
-                        <div className="Ptitulo">
-                            <h2>Titulo:Back-End</h2>
-                            <h2>Disciplina:Programação</h2>
-                        </div>
-                        <div className="Stitulo">
-                            <h2>Autor:Eduardo</h2>
-                        </div>
-                        <div className="icones">
-                            <div className="icon">
-                                <FaRegEdit
-                                    size={30}
-                                    onClick={() => setOpenModalEdit(true)}
-                                />
-                            </div>
-                            <div className="icon">
-                                <FaTrashCan
-                                    size={27}
-                                    onClick={() => setOpenModalremove(true)}
-                                />
-                            </div>
-                        </div>
+            {/*Carrega os posts baseado na quantidade*/}
+            {posts.length > 0 ? (
+                posts.map((post, index) => <CardAuth key={index} post={post} />)
+            ) : (
+                <p>Nenhuma postagem encontrada.</p>
+            )}
+
+            <Modal
+                isOpen={openModal}
+                setModalOpen={() => setOpenModal(!openModal)}
+            >
+                <form
+                    onSubmit={(e) => {
+                        handleSubmit(
+                            e,
+                            {
+                                usuario,
+                                email,
+                                senha,
+                                confirmarSenha,
+                            },
+                            setFormErrors,
+                            setOpenModal
+                        );
+                    }}
+                >
+                    <label>Usuário:</label>
+                    <input
+                        className="modalbutton"
+                        type="text"
+                        name="usuario"
+                        value={usuario}
+                        onChange={(e) => setUsuario(e.target.value)}
+                    />
+
+                    <label>E-mail:</label>
+                    <input
+                        className="modalbutton"
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+
+                    <label>Senha:</label>
+                    <input
+                        className="modalbutton"
+                        type="password"
+                        name="senha"
+                        value={senha}
+                        onChange={(e) => setSenha(e.target.value)}
+                    />
+
+                    <label>Confimar senha:</label>
+                    <input
+                        className="modalbutton"
+                        type="password"
+                        name="confirmarSenha"
+                        value={confirmarSenha}
+                        onChange={(e) => setConfirmarSenha(e.target.value)}
+                    />
+
+                    <div className="grupobutton">
+                        <input type="submit" value="Adicionar" />
+
+                        <input type="submit" value="Cancelar" />
                     </div>
+                </form>
+            </Modal>
 
-                    <div className="card1">
-                        <div className="Ptitulo">
-                            <h2>Titulo:Front-End</h2>
-                            <h2>Disciplina:Programação</h2>
-                        </div>
-                        <div className="Stitulo">
-                            <h2>Autor:Eduardo</h2>
-                        </div>
-                        <div className="icones">
-                            <div className="icon">
-                                <FaRegEdit size={30} />
-                            </div>
-                            <div className="icon">
-                                <FaTrashCan size={27} />
-                            </div>
-                        </div>
+            <ModalView
+                isAdOpen={openModalView}
+                setAdModalOpen={() => setOpenModalView(!openModalView)}
+            >
+                <form
+                    onSubmit={(e) => {
+                        handleDisciplineSubmit(e, { title }, setOpenModalView);
+                    }}
+                >
+                    <label className=""> Titulo: </label>
+                    <input
+                        className="modalbutton"
+                        type="text"
+                        name="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+
+                    <div className="grupobutton">
+                        <input type="submit" value="Adicionar" />
+                        <input type="submit" value="Cancelar" />
                     </div>
-                </div>
-                <div className="card2">
-                    <div className="Centrocard2">
-                        <h2>Total de Postagens</h2>
-                        <h3>SubTotal</h3>
-                        <h3>Disciplina</h3>
-                        <h3>Data</h3>
-                        <h2>Total Postagem</h2>
-                        <input
-                            type="button"
-                            value="Página de Usuário  ->"
-                        ></input>
+                </form>
+            </ModalView>
+
+            <ModalAdicionar
+                isAdOpen={openModalAdic}
+                setAdModalOpen={() => setOpenModalAdic(!openModalAdic)}
+            >
+                <form>
+                    <label> Titulo:</label>
+                    <input className="modalbutton" type="text" name="name" />
+
+                    <label>Autor:</label>
+                    <input className="modalbutton" type="text" name="name" />
+
+                    <label>Disciplina:</label>
+                    <input className="modalbutton" type="text" name="name" />
+
+                    <label>Conteudo:</label>
+                    <input className="modalbutton" type="text" name="name" />
+
+                    <div className="grupobutton">
+                        <input type="submit" value="Adicionar" />
+
+                        <input type="submit" value="cancelar" />
                     </div>
-                    <h2></h2>
-                </div>
-
-                <Modal
-                    isOpen={openModal}
-                    setModalOpen={() => setOpenModal(!openModal)}
-                >
-                    <form
-                        onSubmit={(e) => {
-                            handleSubmit(
-                                e,
-                                {
-                                    usuario,
-                                    email,
-                                    senha,
-                                    confirmarSenha,
-                                },
-                                setFormErrors,
-                                setOpenModal
-                            );
-                        }}
-                    >
-                        <label>Usuário:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="usuario"
-                            value={usuario}
-                            onChange={(e) => setUsuario(e.target.value)}
-                        />
-
-                        <label>E-mail:</label>
-                        <input
-                            className="modalbutton"
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                        <label>Senha:</label>
-                        <input
-                            className="modalbutton"
-                            type="password"
-                            name="senha"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
-                        />
-
-                        <label>Confimar senha:</label>
-                        <input
-                            className="modalbutton"
-                            type="password"
-                            name="confirmarSenha"
-                            value={confirmarSenha}
-                            onChange={(e) => setConfirmarSenha(e.target.value)}
-                        />
-
-                        <div className="grupobutton">
-                            <input type="submit" value="Adicionar" />
-
-                            <input type="submit" value="Cancelar" />
-                        </div>
-                    </form>
-                </Modal>
-
-                <ModalView
-                    isAdOpen={openModalView}
-                    setAdModalOpen={() => setOpenModalView(!openModalView)}
-                >
-                    <form
-                        onSubmit={(e) => {
-                            handleDisciplineSubmit(
-                                e,
-                                { title },
-                                setOpenModalView
-                            );
-                        }}
-                    >
-                        <label className=""> Titulo: </label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="title"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-
-                        <div className="grupobutton">
-                            <input type="submit" value="Adicionar" />
-                            <input type="submit" value="Cancelar" />
-                        </div>
-                    </form>
-                </ModalView>
-
-                <ModalExluir
-                    isOpenn={openModalremove}
-                    setModalOpen={() => setOpenModalremove(!openModalremove)}
-                >
-                    <form>
-                        <label className="excluirtitulo">
-                            {" "}
-                            Deseja exluir a postagem?
-                        </label>
-                        <div className="grupobutton">
-                            <input type="submit" value="Exluir" />
-                            <input type="submit" value="Cancelar" />
-                        </div>
-                    </form>
-                </ModalExluir>
-
-                <ModalEditar
-                    isEOpen={openModalEdit}
-                    setModaEdilOpen={() => setOpenModalEdit(!openModalEdit)}
-                >
-                    <form>
-                        <label> Titulo:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="name"
-                        />
-
-                        <label>Autor:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="name"
-                        />
-
-                        <label>Disciplina:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="name"
-                        />
-
-                        <label>Conteudo:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="name"
-                        />
-
-                        <div className="grupobutton">
-                            <input type="submit" value="Adicionar" />
-
-                            <input type="submit" value="cancelar" />
-                        </div>
-                    </form>
-                </ModalEditar>
-
-                <ModalAdicionar
-                    isAdOpen={openModalAdic}
-                    setAdModalOpen={() => setOpenModalAdic(!openModalAdic)}
-                >
-                    <form>
-                        <label> Titulo:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="name"
-                        />
-
-                        <label>Autor:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="name"
-                        />
-
-                        <label>Disciplina:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="name"
-                        />
-
-                        <label>Conteudo:</label>
-                        <input
-                            className="modalbutton"
-                            type="text"
-                            name="name"
-                        />
-
-                        <div className="grupobutton">
-                            <input type="submit" value="Adicionar" />
-
-                            <input type="submit" value="cancelar" />
-                        </div>
-                    </form>
-                </ModalAdicionar>
-            </section>
+                </form>
+            </ModalAdicionar>
 
             <SectionDetalhe />
 

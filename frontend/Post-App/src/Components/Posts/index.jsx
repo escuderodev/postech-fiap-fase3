@@ -22,8 +22,6 @@ export default function ListPostagens() {
         fetchPosts();
     }, []);
 
-    console.log("O post é ", posts);
-
     return (
         <div className="PrimeiraSesaao">
             <header></header>
