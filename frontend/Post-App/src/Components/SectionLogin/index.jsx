@@ -3,9 +3,6 @@ import './style.css'
 
 
 
-
-
-
 export default function SecaoLogin(){
 
  
@@ -19,7 +16,7 @@ export default function SecaoLogin(){
                 <input type='text' value={''}></input>  
                 </div>  
                 <div>
-                <label for="html">Passwor:</label>
+                <label for="html">Password:</label>
                 <input type='text' value={''}></input>                 
                 </div>
                 <div className="botao">
@@ -28,13 +25,10 @@ export default function SecaoLogin(){
 
             
                 </div>   
-             
-                <p><b><a href="senha"  target="_blank">Esquece Senha</a></b></p>
-             
-                                 
+
             </div>
        
-            </div>
+        </div>
   
         
             

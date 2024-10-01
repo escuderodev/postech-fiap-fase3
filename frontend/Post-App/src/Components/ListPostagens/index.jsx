@@ -52,8 +52,6 @@ export default function ListPostagens() {
 
           <input type="button" value={"Adicionar usuário"} onClick={() => setOpenModal(true)}></input>
 
-
-
         </div>
       </section>
 

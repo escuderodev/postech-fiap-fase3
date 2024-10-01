@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Home from "./Components/Header"; 
 import ListPostagens from "./Components/ListPostagens";
+import Posts from "./Components/Posts";
+
 
 
 export default  function RouterApp(){
@@ -9,7 +11,8 @@ export default  function RouterApp(){
        
         <Routes>
             <Route path="/" element={<Home/>}/>
-            <Route path="/ListPostagens" element={<ListPostagens/>}/>            
+            <Route path="/ListPostagens" element={<ListPostagens/>}/>
+            <Route path="/Posts" element={<Posts/>}/>                
         </Routes>                  
         
         </BrowserRouter>
