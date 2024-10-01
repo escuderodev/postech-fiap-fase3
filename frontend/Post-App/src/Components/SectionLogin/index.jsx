@@ -1,38 +1,53 @@
+import React, { useState } from "react";
+import { login } from "../../services/authService";
+import "./style.css";
 
-import './style.css'
+export default function SecaoLogin() {
+    const [usuario, setUsuario] = useState("");
+    const [senha, setSenha] = useState("");
+    const [token, setToken] = useState("");
 
+    const handleLogin = async () => {
+        try {
+            const data = await login(usuario, senha);
+            console.log(data);
+            setToken(data.token);
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
 
-
-export default function SecaoLogin(){
-
- 
-
-    return(
-   
+    return (
         <div className="SectionLogin">
-            <div className='login'>    
+            <div className="login">
                 <div>
-                <label for="html">Usuário:</label>
-                <input type='text' value={''}></input>  
-                </div>  
+                    <label htmlFor="usuario">Usuário:</label>
+                    <input
+                        type="text"
+                        value={usuario}
+                        onChange={(e) => setUsuario(e.target.value)}
+                    />
+                </div>
                 <div>
-                <label for="html">Password:</label>
-                <input type='text' value={''}></input>                 
+                    <label htmlFor="senha">Senha:</label>
+                    <input
+                        type="password"
+                        value={senha}
+                        onChange={(e) => setSenha(e.target.value)}
+                    />
                 </div>
                 <div className="botao">
-                <input type="button" value="Enviar"></input>    
-                <input type="button" value="Cancelar"></input> 
-
-            
-                </div>   
-
+                    <input type="button" value="Enviar" onClick={handleLogin} />
+                    <input
+                        type="button"
+                        value="Cancelar"
+                        onClick={() => {
+                            setUsuario("");
+                            setSenha("");
+                        }}
+                    />
+                </div>
             </div>
-       
         </div>
-  
-        
-            
-
-     
-    )
+    );
 }
