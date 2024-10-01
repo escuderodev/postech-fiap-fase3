@@ -17,18 +17,17 @@ export const handleDeletePost = async (e, id) => {
     console.log(id);
 };
 
-export const handleEditPost = async (
-    e,
-    { title, content, id },
-    setOpenModal
-) => {
+export const handleEditPost = async (e, post, setOpenModalEdit) => {
     e.preventDefault();
-
     try {
         const token = localStorage.getItem("authToken");
         const response = await axios.put(
-            `/posts/${id}`,
-            { title: title, content: content },
+            `/posts/${post._id}`,
+            {
+                title: post.title,
+                description: post.description,
+                discipline: post._id,
+            },
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -41,7 +40,7 @@ export const handleEditPost = async (
         console.error("Erro ao enviar dados:", error);
     }
 
-    setOpenModal(false);
+    setOpenModalEdit(false);
 };
 
 export const getAllPosts = async () => {

@@ -1,25 +1,40 @@
 import ModalExluir from "../Modal/ModalExcluir";
 import ModalEditar from "../Modal/ModalEditar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
-import { handleDeletePost } from "../../services/postService";
+import { handleDeletePost, handleEditPost } from "../../services/postService";
+import { getAllDisciplines } from "./disciplineService";
 
 const CardAuth = ({ post }) => {
     const [openModalEdit, setOpenModalEdit] = useState(false);
     const [openModalremove, setOpenModalremove] = useState(false);
     const [getpost, setPost] = useState(post);
+    const [title, setTitle] = useState(post.title);
+    const [discipline, setDiscipline] = useState(post.discipline);
+    const [disciplines, setDisciplines] = useState([]);
+    const [description, setDescription] = useState(post.description);
+    const [author, setAuthor] = useState(post.author);
+
+    useEffect(() => {
+        const fetchDisciplines = async () => {
+            const data = await getAllDisciplines();
+            setDisciplines(data);
+        };
+
+        fetchPosts();
+    }, []);
 
     return (
         <section className="Quintasessao">
             <div className="centrocard">
                 <div className="card1">
                     <div className="Ptitulo">
-                        <h2>Titulo:{post.title}</h2>
-                        <h2>Disciplina:{post.discipline}</h2>
+                        <h2>Titulo:{title}</h2>
+                        <h2>Disciplina:{discipline}</h2>
                     </div>
                     <div className="Stitulo">
-                        <h2>Autor:{post.author}</h2>
+                        <h2>Autor:{author}</h2>
                     </div>
                     <div className="icones">
                         <div className="icon">
@@ -71,18 +86,37 @@ const CardAuth = ({ post }) => {
                 isEOpen={openModalEdit}
                 setModaEdilOpen={() => setOpenModalEdit(!openModalEdit)}
             >
-                <form>
+                <form
+                    onSubmit={(e) =>
+                        handleEditPost(e, getpost, setOpenModalEdit)
+                    }
+                >
                     <label> Titulo:</label>
-                    <input className="modalbutton" type="text" name="name" />
+                    <input
+                        className="modalbutton"
+                        type="text"
+                        name="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
 
-                    <label>Autor:</label>
-                    <input className="modalbutton" type="text" name="name" />
+                    <label>Descrição:</label>
+                    <input
+                        className="modalbutton"
+                        type="text"
+                        name="description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
 
                     <label>Disciplina:</label>
-                    <input className="modalbutton" type="text" name="name" />
-
-                    <label>Conteudo:</label>
-                    <input className="modalbutton" type="text" name="name" />
+                    <input
+                        className="modalbutton"
+                        type="text"
+                        name="discipline"
+                        value={discipline}
+                        onChange={(e) => setDiscipline(e.target.value)}
+                    />
 
                     <div className="grupobutton">
                         <input type="submit" value="Adicionar" />

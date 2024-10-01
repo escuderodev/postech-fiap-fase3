@@ -1,5 +1,15 @@
 import axios from "./axiosConfig";
 
+export const getDisciplineById = async (id) => {
+    try {
+        const response = await axios.get("/disciplinies/${id}");
+
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+    }
+};
+
 export const getAllDisciplines = async () => {
     try {
         const response = await axios.get("/disciplinies");
