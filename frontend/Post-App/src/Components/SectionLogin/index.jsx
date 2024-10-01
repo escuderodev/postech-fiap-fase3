@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { login } from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 import "./style.css";
 
 export default function SecaoLogin() {
     const [usuario, setUsuario] = useState("");
     const [senha, setSenha] = useState("");
     const [token, setToken] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
             const data = await login(usuario, senha);
             console.log(data);
             setToken(data.token);
+            navigate("/ListPostagens");
         } catch (error) {
             console.error(error.message);
         }

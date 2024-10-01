@@ -1,6 +1,6 @@
 import axios from "./axiosConfig";
 
-const API_URL = "http://127.0.0.1:3000/login";
+const API_URL = "/login";
 
 export const login = async (usuario, senha) => {
     try {
