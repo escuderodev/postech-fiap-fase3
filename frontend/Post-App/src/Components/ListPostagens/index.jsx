@@ -13,6 +13,7 @@ import ModalAdicionar from "../../Components/Modal/ModalAdicionar";
 import ModalView from "../Modal/ModalView";
 import { useState } from "react";
 import { handleSubmit } from "../../services/userService";
+import { handleDisciplineSubmit } from "../../services/disciplineService";
 
 /*
 import titulo from '../../assets/img05.png'
@@ -36,6 +37,8 @@ export default function ListPostagens() {
     const [email, setEmail] = useState("");
     const [confirmarSenha, setConfirmarSenha] = useState("");
     const [formErrors, setFormErrors] = useState({});
+
+    const [title, setTitle] = useState("");
 
     return (
         <div className="PrimeiraSesaao">
@@ -219,12 +222,22 @@ export default function ListPostagens() {
                     isAdOpen={openModalView}
                     setAdModalOpen={() => setOpenModalView(!openModalView)}
                 >
-                    <form>
+                    <form
+                        onSubmit={(e) => {
+                            handleDisciplineSubmit(
+                                e,
+                                { title },
+                                setOpenModalView
+                            );
+                        }}
+                    >
                         <label className=""> Titulo: </label>
                         <input
                             className="modalbutton"
                             type="text"
-                            name="name"
+                            name="title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                         />
 
                         <div className="grupobutton">
