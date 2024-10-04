@@ -1,8 +1,6 @@
 import axios from "./axiosConfig";
 
-export const handleDeletePost = async (e, id) => {
-    e.preventDefault();
-    console.log(id);
+export const handleDeletePost = async (id) => {
     try {
         const token = localStorage.getItem("authToken");
         const response = await axios.delete(`/posts/${id}`, {

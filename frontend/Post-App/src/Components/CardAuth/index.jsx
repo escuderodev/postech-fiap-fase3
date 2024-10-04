@@ -74,6 +74,7 @@ const CardAuth = ({ post, onUpdate }) => {
                             onClick={() => {
                                 handleDeletePost(post._id);
                                 setOpenModalremove(false);
+                                onUpdate();
                             }}
                         />
                         <input
