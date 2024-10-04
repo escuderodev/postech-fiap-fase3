@@ -49,6 +49,7 @@ img {
     margin: 4px 2px;
     width: 100%;
     border-radius: 20px;
+    background-color: #D9D9D9;
 }
 form> input[type="submit"]{
     width: 100px;

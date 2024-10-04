@@ -12,16 +12,6 @@ import { handleDisciplineSubmit } from "../../services/disciplineService";
 import CardAuth from "../CardAuth";
 import { handleEditPost, getAllPosts } from "../../services/postService";
 
-/*
-import titulo from '../../assets/img05.png'
-import img1 from '../../assets/icone2.png'
-import img2 from '../../assets/Add_To_Queue.png'
-import SectionDetalhe from "../../Components/SectionDetalhe"
-
-import { MdAddToPhotos } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
-import { FaTrashCan } from "react-icons/fa6";*/
-
 export default function ListPostagens() {
     const [openModal, setOpenModal] = useState(false);
     const [openModalView, setOpenModalView] = useState(false);
@@ -33,7 +23,8 @@ export default function ListPostagens() {
     const [senha, setSenha] = useState("");
     const [email, setEmail] = useState("");
     const [confirmarSenha, setConfirmarSenha] = useState("");
-    const [formErrors, setFormErrors] = useState({});
+    const [, setFormErrors] = useState({});
+    const [update, setUpdate] = useState(false);
 
     const [title, setTitle] = useState("");
 
@@ -42,11 +33,18 @@ export default function ListPostagens() {
     useEffect(() => {
         const fetchPosts = async () => {
             const data = await getAllPosts();
+            console.log(data);
             setPosts(data);
+            console.log("Entrou no fetchPosts");
         };
-
         fetchPosts();
-    }, []);
+    }, [update]);
+
+    const handleCloseModalEdit = () => {
+        setTimeout(() => {
+            setUpdate(!update);
+        }, 300);
+    };
 
     return (
         <div className="PrimeiraSesaao">
@@ -106,7 +104,15 @@ export default function ListPostagens() {
 
             {/*Carrega os posts baseado na quantidade*/}
             {posts.length > 0 ? (
-                posts.map((post, index) => <CardAuth key={index} post={post} />)
+                posts.map((post, index) => (
+                    <CardAuth
+                        key={index}
+                        post={post}
+                        onUpdate={() => {
+                            handleCloseModalEdit();
+                        }}
+                    />
+                ))
             ) : (
                 <p>Nenhuma postagem encontrada.</p>
             )}

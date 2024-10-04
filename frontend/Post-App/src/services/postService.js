@@ -17,16 +17,23 @@ export const handleDeletePost = async (e, id) => {
     console.log(id);
 };
 
-export const handleEditPost = async (e, post, setOpenModalEdit) => {
+export const handleEditPost = async (
+    e,
+    post,
+    title,
+    description,
+    discipline,
+    setOpenModalEdit
+) => {
     e.preventDefault();
     try {
         const token = localStorage.getItem("authToken");
         const response = await axios.put(
             `/posts/${post._id}`,
             {
-                title: post.title,
-                description: post.description,
-                discipline: post._id,
+                title: title,
+                description: description,
+                discipline: discipline,
             },
             {
                 headers: {
@@ -45,8 +52,14 @@ export const handleEditPost = async (e, post, setOpenModalEdit) => {
 
 export const getAllPosts = async () => {
     try {
-        const response = await axios.get("/posts");
-        //console.log(response.data.postList);
+        const response = await axios.get("/posts", {
+            headers: {
+                CacheControl: "no-cache",
+                Pragma: "no-cache",
+                Expires: "0",
+            },
+        });
+        console.log(response.data);
         return response.data.postList;
     } catch (error) {
         console.error("Erro ao buscar dados:", error);

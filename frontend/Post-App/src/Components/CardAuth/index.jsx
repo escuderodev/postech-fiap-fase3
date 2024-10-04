@@ -3,26 +3,31 @@ import ModalEditar from "../Modal/ModalEditar";
 import { useState, useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
-import { handleDeletePost, handleEditPost } from "../../services/postService";
-import { getAllDisciplines } from "./disciplineService";
+import {
+    handleDeletePost,
+    handleEditPost,
+    getAllPosts,
+} from "../../services/postService";
+import { getAllDisciplines } from "../../services/disciplineService";
 
-const CardAuth = ({ post }) => {
+const CardAuth = ({ post, onUpdate }) => {
     const [openModalEdit, setOpenModalEdit] = useState(false);
     const [openModalremove, setOpenModalremove] = useState(false);
-    const [getpost, setPost] = useState(post);
-    const [title, setTitle] = useState(post.title);
-    const [discipline, setDiscipline] = useState(post.discipline);
+    const [discipline, setDiscipline] = useState();
     const [disciplines, setDisciplines] = useState([]);
+    const [title, setTitle] = useState(post.title);
     const [description, setDescription] = useState(post.description);
-    const [author, setAuthor] = useState(post.author);
+    //const [author, setAuthor] = useState(post.author);
+    const [postDiscipline, setPostDiscipline] = useState(post.discipline);
 
     useEffect(() => {
         const fetchDisciplines = async () => {
             const data = await getAllDisciplines();
-            setDisciplines(data);
+            setDisciplines(data.disciplineList);
+            setPostDiscipline(post.discipline);
         };
 
-        fetchPosts();
+        fetchDisciplines();
     }, []);
 
     return (
@@ -30,11 +35,11 @@ const CardAuth = ({ post }) => {
             <div className="centrocard">
                 <div className="card1">
                     <div className="Ptitulo">
-                        <h2>Titulo:{title}</h2>
-                        <h2>Disciplina:{discipline}</h2>
+                        <h2>Titulo:{post.title}</h2>
+                        <h2>Disciplina:{post.discipline}</h2>
                     </div>
                     <div className="Stitulo">
-                        <h2>Autor:{author}</h2>
+                        <h2>Autor:{post.author}</h2>
                     </div>
                     <div className="icones">
                         <div className="icon">
@@ -67,7 +72,7 @@ const CardAuth = ({ post }) => {
                             type="button"
                             value="Exluir"
                             onClick={() => {
-                                handleDeletePost(getpost._id);
+                                handleDeletePost(post._id);
                                 setOpenModalremove(false);
                             }}
                         />
@@ -84,12 +89,22 @@ const CardAuth = ({ post }) => {
 
             <ModalEditar
                 isEOpen={openModalEdit}
-                setModaEdilOpen={() => setOpenModalEdit(!openModalEdit)}
+                setModaEdilOpen={() => {
+                    setOpenModalEdit(!openModalEdit);
+                }}
             >
                 <form
-                    onSubmit={(e) =>
-                        handleEditPost(e, getpost, setOpenModalEdit)
-                    }
+                    onSubmit={(e) => {
+                        handleEditPost(
+                            e,
+                            post,
+                            title,
+                            description,
+                            discipline,
+                            setOpenModalEdit
+                        );
+                        onUpdate();
+                    }}
                 >
                     <label> Titulo:</label>
                     <input
@@ -110,18 +125,39 @@ const CardAuth = ({ post }) => {
                     />
 
                     <label>Disciplina:</label>
-                    <input
+                    <select
                         className="modalbutton"
-                        type="text"
                         name="discipline"
                         value={discipline}
-                        onChange={(e) => setDiscipline(e.target.value)}
-                    />
+                        onChange={(ev) => {
+                            setDiscipline(ev.target.value);
+                        }}
+                    >
+                        <option value="">Selecione uma disciplina</option>
+                        {disciplines.length > 0 ? (
+                            disciplines.map((disciplina) => (
+                                <option
+                                    key={disciplina._id}
+                                    value={disciplina._id}
+                                >
+                                    {disciplina.title}
+                                </option>
+                            ))
+                        ) : (
+                            <option disabled>Nenhuma</option>
+                        )}
+                    </select>
 
                     <div className="grupobutton">
                         <input type="submit" value="Adicionar" />
 
-                        <input type="submit" value="cancelar" />
+                        <input
+                            type="button"
+                            value="cancelar"
+                            onClick={() => {
+                                setOpenModalEdit(false);
+                            }}
+                        />
                     </div>
                 </form>
             </ModalEditar>

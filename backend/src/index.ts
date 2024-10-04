@@ -11,5 +11,5 @@ new App().getServer().listen(PORT, () => {
     .then(() => {
             console.log(`Server is running on http://localhost:${PORT}`)
         })
-    .catch(() => console.log("Conexão com banco de dados falhou!"))
+    .catch((error) => console.log("Conexão com banco de dados falhou!\n", error))
 })
