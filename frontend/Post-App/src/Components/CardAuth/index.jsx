@@ -130,11 +130,10 @@ const CardAuth = ({ post, onUpdate }) => {
                         className="modalbutton"
                         name="discipline"
                         value={discipline}
-                        onChange={(ev) => {
-                            setDiscipline(ev.target.value);
+                        onChange={(e) => {
+                            setDiscipline(e.target.value);
                         }}
                     >
-                        <option value="">Selecione uma disciplina</option>
                         {disciplines.length > 0 ? (
                             disciplines.map((disciplina) => (
                                 <option

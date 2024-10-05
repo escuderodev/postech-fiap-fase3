@@ -207,6 +207,7 @@ export default function ListPostagens() {
                             setOpenModalView
                         );
                         onUpdate();
+                        setDisciplineTitle("");
                     }}
                 >
                     <label className=""> Titulo: </label>
@@ -239,6 +240,9 @@ export default function ListPostagens() {
                         handleAddPost(e, title, description, discipline);
                         onUpdate();
                         setOpenModalAdic(false);
+                        setTitle("");
+                        setDescription("");
+                        setDiscipline("");
                     }}
                 >
                     <label> Titulo:</label>
@@ -280,7 +284,9 @@ export default function ListPostagens() {
                             setDiscipline(e.target.value);
                         }}
                     >
-                        <option value="">Selecione uma disciplina</option>
+                        <option value="" disabled>
+                            Selecione uma disciplina
+                        </option>
                         {disciplines.length > 0 ? (
                             disciplines.map((disciplina) => (
                                 <option
