@@ -20,11 +20,7 @@ export const getAllDisciplines = async () => {
     }
 };
 
-export const handleDisciplineSubmit = async (
-    e,
-    { title },
-    setOpenModalView
-) => {
+export const handleDisciplineSubmit = async (e, title, setOpenModalView) => {
     e.preventDefault();
 
     try {

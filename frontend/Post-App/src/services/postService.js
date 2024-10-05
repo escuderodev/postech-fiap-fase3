@@ -1,5 +1,30 @@
 import axios from "./axiosConfig";
 
+export const handleAddPost = async (e, title, description, discipline) => {
+    e.preventDefault();
+    console.log("Entrou no handleAddPost");
+    try {
+        console.log(title, description, discipline);
+        const token = localStorage.getItem("authToken");
+        const response = await axios.post(
+            "/posts",
+            {
+                title: title,
+                description: description,
+                discipline: discipline,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        console.log(response.data);
+    } catch (error) {
+        console.error("Erro ao enviar dados:", error);
+    }
+};
+
 export const handleDeletePost = async (id) => {
     try {
         const token = localStorage.getItem("authToken");

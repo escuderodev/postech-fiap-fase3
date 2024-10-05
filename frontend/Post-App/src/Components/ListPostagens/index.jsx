@@ -8,9 +8,16 @@ import ModalAdicionar from "../../Components/Modal/ModalAdicionar";
 import ModalView from "../Modal/ModalView";
 import { useState, useEffect } from "react";
 import { handleSubmit } from "../../services/userService";
-import { handleDisciplineSubmit } from "../../services/disciplineService";
+import {
+    getAllDisciplines,
+    handleDisciplineSubmit,
+} from "../../services/disciplineService";
 import CardAuth from "../CardAuth";
-import { handleEditPost, getAllPosts } from "../../services/postService";
+import {
+    handleEditPost,
+    getAllPosts,
+    handleAddPost,
+} from "../../services/postService";
 
 export default function ListPostagens() {
     const [openModal, setOpenModal] = useState(false);
@@ -26,8 +33,11 @@ export default function ListPostagens() {
     const [, setFormErrors] = useState({});
     const [update, setUpdate] = useState(false);
 
+    const [disciplines, setDisciplines] = useState([]);
+    const [discipline, setDiscipline] = useState("");
+    const [disciplineTitle, setDisciplineTitle] = useState("");
+    const [description, setDescription] = useState("");
     const [title, setTitle] = useState("");
-
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -38,9 +48,14 @@ export default function ListPostagens() {
             console.log("Entrou no fetchPosts");
         };
         fetchPosts();
+        const fetchDisciplines = async () => {
+            const data = await getAllDisciplines();
+            setDisciplines(data.disciplineList);
+        };
+        fetchDisciplines();
     }, [update]);
 
-    const handleCloseModalEdit = () => {
+    const onUpdate = () => {
         setTimeout(() => {
             setUpdate(!update);
         }, 300);
@@ -109,7 +124,7 @@ export default function ListPostagens() {
                         key={index}
                         post={post}
                         onUpdate={() => {
-                            handleCloseModalEdit();
+                            onUpdate();
                         }}
                     />
                 ))
@@ -186,7 +201,12 @@ export default function ListPostagens() {
             >
                 <form
                     onSubmit={(e) => {
-                        handleDisciplineSubmit(e, { title }, setOpenModalView);
+                        handleDisciplineSubmit(
+                            e,
+                            disciplineTitle,
+                            setOpenModalView
+                        );
+                        onUpdate();
                     }}
                 >
                     <label className=""> Titulo: </label>
@@ -194,13 +214,17 @@ export default function ListPostagens() {
                         className="modalbutton"
                         type="text"
                         name="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={disciplineTitle}
+                        onChange={(e) => setDisciplineTitle(e.target.value)}
                     />
 
                     <div className="grupobutton">
                         <input type="submit" value="Adicionar" />
-                        <input type="submit" value="Cancelar" />
+                        <input
+                            type="button"
+                            value="Cancelar"
+                            onClick={() => setOpenModalView(false)}
+                        />
                     </div>
                 </form>
             </ModalView>
@@ -209,23 +233,78 @@ export default function ListPostagens() {
                 isAdOpen={openModalAdic}
                 setAdModalOpen={() => setOpenModalAdic(!openModalAdic)}
             >
-                <form>
+                <form
+                    onSubmit={(e) => {
+                        //console.log(title, description, discipline);
+                        handleAddPost(e, title, description, discipline);
+                        onUpdate();
+                        setOpenModalAdic(false);
+                    }}
+                >
                     <label> Titulo:</label>
-                    <input className="modalbutton" type="text" name="name" />
+                    <input
+                        className="modalbutton"
+                        type="text"
+                        name="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
 
-                    <label>Autor:</label>
-                    <input className="modalbutton" type="text" name="name" />
+                    <label>Descrição:</label>
+                    <input
+                        className="modalbutton"
+                        type="text"
+                        name="description"
+                        value={description}
+                        onChange={(e) => {
+                            setDescription(e.target.value);
+                        }}
+                    />
 
-                    <label>Disciplina:</label>
-                    <input className="modalbutton" type="text" name="name" />
+                    {/* <label>Disciplina:</label>
+                    <input
+                        className="modalbutton"
+                        type="text"
+                        name="discipline"
+                        value={discipline}
+                        onChange={(e) => {
+                            setDiscipline(e.target.value);
+                        }}
+                    /> */}
 
-                    <label>Conteudo:</label>
-                    <input className="modalbutton" type="text" name="name" />
+                    <select
+                        className="modalbutton"
+                        name="discipline"
+                        value={discipline}
+                        onChange={(e) => {
+                            setDiscipline(e.target.value);
+                        }}
+                    >
+                        <option value="">Selecione uma disciplina</option>
+                        {disciplines.length > 0 ? (
+                            disciplines.map((disciplina) => (
+                                <option
+                                    key={disciplina._id}
+                                    value={disciplina._id}
+                                >
+                                    {disciplina.title}
+                                </option>
+                            ))
+                        ) : (
+                            <option disabled>Nenhuma</option>
+                        )}
+                    </select>
 
                     <div className="grupobutton">
                         <input type="submit" value="Adicionar" />
 
-                        <input type="submit" value="cancelar" />
+                        <input
+                            type="button"
+                            value="cancelar"
+                            onClick={() => {
+                                setOpenModalAdic(false);
+                            }}
+                        />
                     </div>
                 </form>
             </ModalAdicionar>
