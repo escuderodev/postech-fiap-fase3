@@ -4,7 +4,7 @@ import { styles } from './styles';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 
-export function SignIn() {
+export function LogIn() {
   const navigation = useNavigation();
   
   return (
@@ -33,7 +33,12 @@ export function SignIn() {
       >
         <Text style={styles.buttonText}>Acessar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonNewAccount}>
+      <TouchableOpacity 
+      style={styles.buttonNewAccount}
+      onPress={() => {
+        navigation.navigate('SingUp')
+      }}
+      >
         <Text style={styles.buttonRegisterText}>Não possui uma conta? Registre-se!</Text>
       </TouchableOpacity>
       </Animatable.View>
